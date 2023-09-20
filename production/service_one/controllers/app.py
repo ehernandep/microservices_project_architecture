@@ -1,5 +1,6 @@
 import os
 import psycopg2
+import json
 
 
 def handler(event, context):
@@ -14,12 +15,17 @@ def handler(event, context):
         password=rds_password,
     )
     cursor = conn.cursor()
-    cursor.execute(
-        """INSERT INTO example (name, age)
-            VALUES ('s', 23);"""
-    )
-    conn.commit()
+    cursor.execute("""SELECT * FROM example""")
+    data = cursor.fetchall()
     cursor.close()
     conn.close()
 
-    return {"statusCode": 200, "body": "Connected to the database successfully!"}
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+        },
+        "body": json.dumps(data),
+    }

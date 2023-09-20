@@ -38,6 +38,7 @@ functions:
           path: hello
           method: get
 
+
     layers:
       - Ref: PythonRequirementsLambdaLayer
 
