@@ -1,15 +1,15 @@
-service: parcelas
+service: seguimiento-parcelas
 provider:
   name: aws
   runtime: python3.8
   region: us-east-1
   timetout: 30
   environment:
-      DB_HOST: production-ever-green.csif2sx3kogz.us-east-1.rds.amazonaws.com
-      DB_PORT: 5432
-      DB_NAME: productionevergreen
-      DB_USER: postgres
-      DB_PASSWORD: 12345678
+    DB_HOST: production-ever-green.csif2sx3kogz.us-east-1.rds.amazonaws.com
+    DB_PORT: 5432
+    DB_NAME: productionevergreen
+    DB_USER: postgres
+    DB_PASSWORD: 12345678
 
   iamRoleStatements:
     - Effect: Allow
@@ -31,38 +31,35 @@ custom:
       name: ${self:service}-python-libraries
 
 functions:
-  parcelasGet:
-    handler: controllers/parcelas_get.handler
+  seguimientoParcelasGet:
+    handler: controllers/seguimiento_parcelas_get.handler
     events:
       - http:
-          path: parcelas
+          path: seguimiento_parcelas
           method: get
     layers:
       - Ref: PythonRequirementsLambdaLayer
-
-  parcelasPost:
-    handler: controllers/parcelas_post.handler
+  seguimientoParcelasPost:
+    handler: controllers/seguimiento_parcelas_post.handler
     events:
       - http:
-          path: parcelas
+          path: seguimiento_parcelas
           method: post
     layers:
       - Ref: PythonRequirementsLambdaLayer
-
-  parcelasPut:
-    handler: controllers/parcelas_put.handler
+  seguimientoParcelasPut:
+    handler: controllers/seguimiento_parcelas_put.handler
     events:
       - http:
-          path: parcelas
+          path: seguimiento_parcelas
           method: put
     layers:
       - Ref: PythonRequirementsLambdaLayer
-
-  parcelasDelete:
-    handler: controllers/parcelas_delete.handler
+  seguimientoParcelasDelete:
+    handler: controllers/seguimiento_parcelas_delete.handler
     events:
       - http:
-          path: parcelas
+          path: seguimiento_parcelas
           method: delete
     layers:
       - Ref: PythonRequirementsLambdaLayer
@@ -70,4 +67,3 @@ functions:
 plugins:
   - serverless-python-requirements
   - serverless-offline
-

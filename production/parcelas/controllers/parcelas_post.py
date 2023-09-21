@@ -43,8 +43,8 @@ def handler(event, context):
     event_body = json.loads(event['body'])
     user_id = str(uuid.uuid4().hex)
     terrain_name = event_body['terrain_name']
-    terrain_area = event_body['terrain_area']
-    partition_count = event_body['partition_count']
+    terrain_area = int(event_body['terrain_area'])
+    partition_count = int(event_body['partition_count'])
     terrain_id = _create_terrain_details(
         user_id, terrain_name, terrain_area, partition_count
     )

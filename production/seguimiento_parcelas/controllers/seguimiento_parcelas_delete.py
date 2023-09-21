@@ -15,10 +15,16 @@ def handler(event, context):
         password=rds_password,
     )
     cursor = conn.cursor()
-    cursor.execute("""SELECT * FROM example""")
-    data = cursor.fetchall()
+    cursor.execute("""CREATE TABLE TerrainDetails (
+                    terrain_id INT AUTO_INCREMENT PRIMARY KEY,
+                    user_id INT,
+                    terrain_name VARCHAR(255),
+                    terrain_area DECIMAL(10, 2),
+                    partition_count INT);  """)
+    cursor.commit()
     cursor.close()
     conn.close()
+
 
     return {
         "statusCode": 200,
