@@ -1,0 +1,69 @@
+service: semillas
+provider:
+  name: aws
+  runtime: python3.8
+  region: us-east-1
+  timetout: 30
+  environment:
+    DB_HOST: production-ever-green.csif2sx3kogz.us-east-1.rds.amazonaws.com
+    DB_PORT: 5432
+    DB_NAME: productionevergreen
+    DB_USER: postgres
+    DB_PASSWORD: 12345678
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - "ec2:CreateNetworkInterface"
+      Resource: "*"
+
+    - Effect: "Allow"
+      Action:
+        - "rds-db:connect"
+      Resource: "*"
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    useDownloadCache: true
+    useStaticCache: true
+    layer:
+      name: ${self:service}-python-libraries
+
+functions:
+  semillasGet:
+    handler: controllers/semillas_get.handler
+    events:
+      - http:
+          path: semillas
+          method: get
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+  semillasPost:
+    handler: controllers/semillas_post.handler
+    events:
+      - http:
+          path: semillas
+          method: post
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+  semillasPut:
+    handler: controllers/semillas_put.handler
+    events:
+      - http:
+          path: semillas
+          method: put
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+  semillasDelete:
+    handler: controllers/semillas_delete.handler
+    events:
+      - http:
+          path: semillas
+          method: delete
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+
+plugins:
+  - serverless-python-requirements
+  - serverless-offline
